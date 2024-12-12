@@ -108,7 +108,7 @@ resource "aws_secretsmanager_secret_version" "keycloak_config" {
 
 resource "kubectl_manifest" "keycloak_secret_store" {
   depends_on = [
-    kubectl_manifest.application_argocd_aws_load_balancer_controller,
+    # kubectl_manifest.application_argocd_aws_load_balancer_controller,
     kubectl_manifest.application_argocd_external_secrets,
     kubernetes_manifest.serviceaccount_external_secret_keycloak
   ]
@@ -202,8 +202,7 @@ resource "random_password" "keycloak_postgres_password" {
 
 resource "kubectl_manifest" "application_argocd_keycloak" {
   depends_on = [
-    kubectl_manifest.keycloak_secret_store,
-    kubectl_manifest.application_argocd_ingress_nginx
+    kubectl_manifest.keycloak_secret_store
   ]
 
   yaml_body = templatefile("${path.module}/templates/argocd-apps/keycloak.yaml", {
@@ -227,13 +226,13 @@ resource "kubectl_manifest" "application_argocd_keycloak" {
   }
 }
 
-resource "kubectl_manifest" "ingress_keycloak" {
-  depends_on = [
-    kubectl_manifest.application_argocd_keycloak,
-  ]
-
-  yaml_body = templatefile("${path.module}/templates/manifests/ingress-keycloak.yaml", {
-      KEYCLOAK_DOMAIN_NAME = local.kc_domain_name
-    }
-  )
-}
+#resource "kubectl_manifest" "ingress_keycloak" {
+#  depends_on = [
+#    kubectl_manifest.application_argocd_keycloak,
+#  ]
+#
+#  yaml_body = templatefile("${path.module}/templates/manifests/ingress-keycloak.yaml", {
+#      KEYCLOAK_DOMAIN_NAME = local.kc_domain_name
+#    }
+#  )
+#}
