@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: cnoe-dev-gateway
+  namespace: istio-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - "*.cnoe-dev.nexus.ripplenet.dev"
+      port:
+        name: https-default
+        number: 443
+        protocol: HTTPS
+      tls:
+        credentialName: cnoe-dev-cert
+        mode: SIMPLE
