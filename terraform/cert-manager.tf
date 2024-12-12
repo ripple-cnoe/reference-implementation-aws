@@ -14,8 +14,8 @@ resource "terraform_data" "wait_for_cert_manager" {
 
 resource "kubectl_manifest" "cluster_issuer_prod" {
   depends_on = [
-    terraform_data.wait_for_cert_manager,
-    kubectl_manifest.application_argocd_ingress_nginx
+    terraform_data.wait_for_cert_manager
+    # kubectl_manifest.application_argocd_ingress_nginx
   ]
   yaml_body = templatefile("${path.module}/templates/manifests/cluster-issuer.yaml", {
     REPO_URL = local.repo_url
