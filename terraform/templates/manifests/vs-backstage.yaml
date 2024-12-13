@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: backstage
+  namespace: backstage
+spec:
+  gateways:
+  - istio-gateway/cnoe-dev-gateway
+  hosts:
+  - ${BACKSTAGE_DOMAIN_NAME}
+  http:
+    - route:
+      - destination:
+         host: backstage
+         port:
+           number: 7007
+

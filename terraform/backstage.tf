@@ -78,3 +78,14 @@ resource "kubectl_manifest" "application_argocd_backstage" {
 #    }
 #  )
 #}
+
+resource "kubectl_manifest" "ingress_backstage" {
+  depends_on = [
+    kubectl_manifest.application_argocd_backstage,
+  ]
+
+  yaml_body = templatefile("${path.module}/templates/manifests/vs-backstage.yaml", {
+      BACKSTAGE_DOMAIN_NAME = local.backstage_domain_name
+    }
+  )
+}

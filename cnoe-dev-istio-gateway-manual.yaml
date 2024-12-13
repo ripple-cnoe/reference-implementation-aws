@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: 'cnoe-dev-istio-gateway-manual'
+  namespace: argo-cd
+  labels:
+    component: istio-gateway
+
+spec:
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  project: ""
+  source:
+    chart: gateway
+    repoURL: https://istio-release.storage.googleapis.com/charts
+    targetRevision: 1.22.1
+    helm:
+      releaseName: istio-gateway
+      valuesObject:
+        service:
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+        podAnnotations:
+          proxy.istio.io/config: '{"gatewayTopology" : { "proxyProtocol": {} }}'
+  destination:
+    namespace: istio-gateway
+    name: cnoe-dev

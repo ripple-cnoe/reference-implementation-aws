@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    component: istiod
+  name: cnoe-dev-istiod-manual
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: istio-system
+    name: cnoe-dev
+  ignoreDifferences:
+  - group: admissionregistration.k8s.io
+    jqPathExpressions:
+    - .webhooks[].failurePolicy
+    kind: ValidatingWebhookConfiguration
+    name: istio-validator-istio-system
+  project: default
+  source:
+    helm:
+      ignoreMissingValueFiles: true
+      releaseName: istiod
+      valueFiles:
+      - ./values-istiod.yaml
+      - ./clusters/cnoe-dev/values-istiod.yaml
+    path: .
+    repoURL: git@gitlab.ops.ripple.com:platform-engineering/kubernetes/components/istio
+    targetRevision: main
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true

@@ -1,0 +1,1458 @@
+data.aws_route53_zone.selected[0]: Reading...
+module.crossplane_aws_provider_role.data.aws_partition.current: Reading...
+module.external_dns_role[0].data.aws_partition.current: Reading...
+module.external_dns_role[0].data.aws_caller_identity.current: Reading...
+module.crossplane_aws_provider_role.data.aws_caller_identity.current: Reading...
+module.external_secrets_role_keycloak[0].data.aws_partition.current: Reading...
+module.external_dns_role[0].data.aws_partition.current: Read complete after 0s [id=aws]
+module.crossplane_aws_provider_role.data.aws_partition.current: Read complete after 0s [id=aws]
+module.external_secrets_role_keycloak[0].data.aws_partition.current: Read complete after 0s [id=aws]
+module.external_secrets_role_keycloak[0].data.aws_caller_identity.current: Reading...
+module.external_secrets_role_keycloak[0].data.aws_region.current: Reading...
+module.external_secrets_role_keycloak[0].data.aws_region.current: Read complete after 0s [id=us-west-2]
+data.aws_caller_identity.current: Reading...
+module.external_dns_role[0].data.aws_region.current: Reading...
+module.external_dns_role[0].data.aws_region.current: Read complete after 0s [id=us-west-2]
+module.data_on_eks_runner_role.data.aws_partition.current: Reading...
+module.data_on_eks_runner_role.data.aws_partition.current: Read complete after 0s [id=aws]
+module.data_on_eks_runner_role.data.aws_region.current: Reading...
+module.data_on_eks_runner_role.data.aws_region.current: Read complete after 0s [id=us-west-2]
+module.crossplane_aws_provider_role.data.aws_region.current: Reading...
+module.crossplane_aws_provider_role.data.aws_region.current: Read complete after 0s [id=us-west-2]
+data.aws_eks_cluster.target: Reading...
+module.external_dns_role[0].data.aws_caller_identity.current: Read complete after 0s [id=801172442310]
+module.data_on_eks_runner_role.data.aws_caller_identity.current: Reading...
+module.crossplane_aws_provider_role.data.aws_caller_identity.current: Read complete after 0s [id=801172442310]
+module.external_secrets_role_keycloak[0].data.aws_caller_identity.current: Read complete after 1s [id=801172442310]
+data.aws_caller_identity.current: Read complete after 1s [id=801172442310]
+module.data_on_eks_runner_role.data.aws_caller_identity.current: Read complete after 1s [id=801172442310]
+data.aws_eks_cluster.target: Read complete after 1s [id=cnoe-dev]
+data.aws_iam_openid_connect_provider.eks_oidc: Reading...
+data.aws_route53_zone.selected[0]: Read complete after 1s [id=Z048723722W20IHB5KCFH]
+data.aws_iam_openid_connect_provider.eks_oidc: Read complete after 1s [id=arn:aws:iam::801172442310:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4]
+module.external_secrets_role_keycloak[0].data.aws_iam_policy_document.this[0]: Reading...
+module.crossplane_aws_provider_role.data.aws_iam_policy_document.this[0]: Reading...
+module.external_dns_role[0].data.aws_iam_policy_document.this[0]: Reading...
+module.data_on_eks_runner_role.data.aws_iam_policy_document.this[0]: Reading...
+module.external_secrets_role_keycloak[0].data.aws_iam_policy_document.this[0]: Read complete after 0s [id=1050937485]
+module.crossplane_aws_provider_role.data.aws_iam_policy_document.this[0]: Read complete after 0s [id=2887371190]
+module.external_dns_role[0].data.aws_iam_policy_document.this[0]: Read complete after 0s [id=1328729085]
+module.data_on_eks_runner_role.data.aws_iam_policy_document.this[0]: Read complete after 0s [id=3402293575]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_iam_policy.external-dns[0] will be created
+  + resource "aws_iam_policy" "external-dns" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "For use with External DNS Controller"
+      + id               = (known after apply)
+      + name             = (known after apply)
+      + name_prefix      = "cnoe-external-dns-"
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "route53:ChangeResourceRecordSets",
+                          + "route53:ListResourceRecordSets",
+                          + "route53:ListTagsForResource",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:route53:::hostedzone/Z048723722W20IHB5KCFH",
+                        ]
+                    },
+                  + {
+                      + Action   = [
+                          + "route53:ListHostedZones",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "*",
+                        ]
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags_all         = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+    }
+
+  # aws_iam_policy.external-secrets[0] will be created
+  + resource "aws_iam_policy" "external-secrets" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "For use with External Secrets Controller for Keycloak"
+      + id               = (known after apply)
+      + name             = (known after apply)
+      + name_prefix      = "cnoe-external-secrets-"
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "secretsmanager:GetResourcePolicy",
+                          + "secretsmanager:GetSecretValue",
+                          + "secretsmanager:DescribeSecret",
+                          + "secretsmanager:ListSecretVersionIds",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:secretsmanager:us-west-2:801172442310:secret:cnoe/keycloak/*",
+                        ]
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags_all         = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+    }
+
+  # aws_iam_role_policy_attachment.external_dns_role_attach[0] will be created
+  + resource "aws_iam_role_policy_attachment" "external_dns_role_attach" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = (known after apply)
+    }
+
+  # aws_iam_role_policy_attachment.external_secrets_role_attach[0] will be created
+  + resource "aws_iam_role_policy_attachment" "external_secrets_role_attach" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = (known after apply)
+    }
+
+  # aws_secretsmanager_secret.keycloak_config[0] will be created
+  + resource "aws_secretsmanager_secret" "keycloak_config" {
+      + arn                            = (known after apply)
+      + description                    = "for use with cnoe keycloak installation"
+      + force_overwrite_replica_secret = false
+      + id                             = (known after apply)
+      + name                           = "cnoe/keycloak/config"
+      + name_prefix                    = (known after apply)
+      + policy                         = (known after apply)
+      + recovery_window_in_days        = 0
+      + tags_all                       = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+    }
+
+  # aws_secretsmanager_secret_version.keycloak_config[0] will be created
+  + resource "aws_secretsmanager_secret_version" "keycloak_config" {
+      + arn            = (known after apply)
+      + id             = (known after apply)
+      + secret_id      = (known after apply)
+      + secret_string  = (sensitive value)
+      + version_id     = (known after apply)
+      + version_stages = (known after apply)
+    }
+
+  # kubectl_manifest.application_argocd_argo_workflows will be created
+  + resource "kubectl_manifest" "application_argocd_argo_workflows" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "argo-workflows"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: argo-workflows
+              namespace: argocd
+            spec:
+              destination:
+                namespace: argo
+                server: https://kubernetes.default.svc
+              project: cnoe
+              sources:
+              - chart: argo-workflows
+                helm:
+                  parameters:
+                  - name: server.sso.issuer
+                    value: https://keycloak.cnoe-dev.nexus.ripplenet.dev/realms/cnoe
+                  - name: server.sso.redirectUrl
+                    value: https://argo.cnoe-dev.nexus.ripplenet.dev/oauth2/callback
+                  releaseName: argo-workflows
+                  valueFiles:
+                  - $values/packages/argo-workflows/dev/values.yaml
+                repoURL: https://argoproj.github.io/argo-helm
+                targetRevision: 0.31.0
+              - ref: values
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions:
+                - CreateNamespace=true
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_argo_workflows_sso_config will be created
+  + resource "kubectl_manifest" "application_argocd_argo_workflows_sso_config" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "argo-workflows-sso-config"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: argo-workflows-sso-config
+              namespace: argocd
+            spec:
+              destination:
+                namespace: argo
+                server: https://kubernetes.default.svc
+              project: cnoe
+              sources:
+              - path: packages/argo-workflows-sso-config/dev
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions:
+                - CreateNamespace=true
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_argo_workflows_templates will be created
+  + resource "kubectl_manifest" "application_argocd_argo_workflows_templates" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "argo-workflows-templates"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: argo-workflows-templates
+              namespace: argocd
+            spec:
+              destination:
+                namespace: argo
+                server: https://kubernetes.default.svc
+              project: cnoe
+              sources:
+              - path: packages/argo-workflows-templates/dev/
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions:
+                - CreateNamespace=true
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_backstage will be created
+  + resource "kubectl_manifest" "application_argocd_backstage" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "backstage"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: backstage
+              namespace: argocd
+            spec:
+              destination:
+                namespace: backstage
+                server: https://kubernetes.default.svc
+              ignoreDifferences:
+              - jsonPointers:
+                - /data/k8s-config.yaml
+                kind: Secret
+                name: k8s-config
+                namespace: backstage
+              project: cnoe
+              sources:
+              - path: packages/backstage/dev/
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions:
+                - CreateNamespace=true
+                - RespectIgnoreDifferences=true
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_cert_manager will be created
+  + resource "kubectl_manifest" "application_argocd_cert_manager" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "cert-manager"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: cert-manager
+              namespace: argocd
+            spec:
+              destination:
+                namespace: cert-manager
+                server: https://kubernetes.default.svc
+              project: cnoe
+              sources:
+              - chart: cert-manager
+                helm:
+                  releaseName: cert-manager
+                  valueFiles:
+                  - $values/packages/cert-manager/dev/values.yaml
+                repoURL: https://charts.jetstack.io
+                targetRevision: 1.12.2
+              - ref: values
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions:
+                - CreateNamespace=true
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_crossplane will be created
+  + resource "kubectl_manifest" "application_argocd_crossplane" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "crossplane"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: crossplane
+              namespace: argocd
+            spec:
+              destination:
+                namespace: crossplane-system
+                server: https://kubernetes.default.svc
+              project: cnoe
+              sources:
+              - chart: crossplane
+                helm:
+                  releaseName: crossplane
+                  valueFiles:
+                  - $values/packages/crossplane/dev/values.yaml
+                repoURL: https://charts.crossplane.io/stable
+                targetRevision: 1.13.2
+              - ref: values
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions:
+                - CreateNamespace=true
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_crossplane_compositions will be created
+  + resource "kubectl_manifest" "application_argocd_crossplane_compositions" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "crossplane-compositions"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: crossplane-compositions
+              namespace: argocd
+            spec:
+              destination:
+                namespace: crossplane-system
+                server: https://kubernetes.default.svc
+              project: cnoe
+              source:
+                path: packages/crossplane-compositions/dev/
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions: []
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_crossplane_provider will be created
+  + resource "kubectl_manifest" "application_argocd_crossplane_provider" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "crossplane-provider"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: crossplane-provider
+              namespace: argocd
+            spec:
+              destination:
+                namespace: crossplane-system
+                server: https://kubernetes.default.svc
+              project: cnoe
+              source:
+                path: packages/crossplane/dev/
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions: []
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_external_dns will be created
+  + resource "kubectl_manifest" "application_argocd_external_dns" {
+      + api_version             = (known after apply)
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = (known after apply)
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = (known after apply)
+      + namespace               = (known after apply)
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = (known after apply)
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_external_secrets will be created
+  + resource "kubectl_manifest" "application_argocd_external_secrets" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "external-secrets"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: external-secrets
+              namespace: argocd
+            spec:
+              destination:
+                namespace: external-secrets
+                server: https://kubernetes.default.svc
+              project: cnoe
+              sources:
+              - chart: external-secrets
+                helm:
+                  releaseName: external-secrets
+                  valueFiles:
+                  - $values/packages/external-secrets/dev/values.yaml
+                repoURL: https://charts.external-secrets.io
+                targetRevision: 0.9.2
+              - ref: values
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions:
+                - CreateNamespace=true
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.application_argocd_keycloak will be created
+  + resource "kubectl_manifest" "application_argocd_keycloak" {
+      + api_version             = "argoproj.io/v1alpha1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "Application"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "keycloak"
+      + namespace               = "argocd"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: argoproj.io/v1alpha1
+            kind: Application
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+              labels:
+                env: dev
+              name: keycloak
+              namespace: argocd
+            spec:
+              destination:
+                namespace: keycloak
+                server: https://kubernetes.default.svc
+              project: cnoe
+              sources:
+              - path: packages/keycloak/dev-external-secrets/
+                repoURL: https://github.com/cnoe-io/reference-implementation-aws
+                targetRevision: HEAD
+              syncPolicy:
+                automated: {}
+                syncOptions:
+                - CreateNamespace=true
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.cluster_issuer_prod will be created
+  + resource "kubectl_manifest" "cluster_issuer_prod" {
+      + api_version             = "cert-manager.io/v1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "ClusterIssuer"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "letsencrypt-prod"
+      + namespace               = (known after apply)
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: cert-manager.io/v1
+            kind: ClusterIssuer
+            metadata:
+              name: letsencrypt-prod
+            spec:
+              acme:
+                privateKeySecretRef:
+                  name: letsencrypt-prod
+                server: https://acme-v02.api.letsencrypt.org/directory
+                solvers:
+                - http01:
+                    ingress:
+                      ingressClassName: nginx
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.crossplane_provider_controller_config will be created
+  + resource "kubectl_manifest" "crossplane_provider_controller_config" {
+      + api_version             = (known after apply)
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = (known after apply)
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = (known after apply)
+      + namespace               = (known after apply)
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = (known after apply)
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.ingress_argo_workflows will be created
+  + resource "kubectl_manifest" "ingress_argo_workflows" {
+      + api_version             = "networking.istio.io/v1beta1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "VirtualService"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "argo-workflows"
+      + namespace               = "argo"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: networking.istio.io/v1beta1
+            kind: VirtualService
+            metadata:
+              name: argo-workflows
+              namespace: argo
+            spec:
+              gateways:
+              - cnoe-dev-gateway
+              hosts:
+              - workflows.cnoe-dev.nexus.ripplenet.dev
+              http:
+              - route:
+                - destination:
+                    host: argo-workflows-server
+                    port:
+                      number: 2746
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.ingress_backstage will be created
+  + resource "kubectl_manifest" "ingress_backstage" {
+      + api_version             = "networking.istio.io/v1beta1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "VirtualService"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "backstage"
+      + namespace               = "backstage"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: networking.istio.io/v1beta1
+            kind: VirtualService
+            metadata:
+              name: backstage
+              namespace: backstage
+            spec:
+              gateways:
+              - cnoe-dev-gateway
+              hosts:
+              - backstage.cnoe-dev.nexus.ripplenet.dev
+              http:
+              - route:
+                - destination:
+                    host: backstage
+                    port:
+                      number: 7007
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.ingress_keycloak will be created
+  + resource "kubectl_manifest" "ingress_keycloak" {
+      + api_version             = "networking.istio.io/v1beta1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "VirtualService"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "keycloak"
+      + namespace               = "argo"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: networking.istio.io/v1beta1
+            kind: VirtualService
+            metadata:
+              name: keycloak
+              namespace: argo
+            spec:
+              gateways:
+              - cnoe-dev-gateway
+              hosts:
+              - keycloak.cnoe-dev.nexus.ripplenet.dev
+              http:
+              - match:
+                - uri:
+                    prefix: /realms/master
+                route:
+                - destination:
+                    host: keycloak
+                    port:
+                      number: 8081
+              - match:
+                - uri:
+                    exact: /
+                route:
+                - destination:
+                    host: keycloak
+                    port:
+                      number: 8081
+              - match:
+                - uri:
+                    prefix: /realms
+                route:
+                - destination:
+                    host: keycloak
+                    port:
+                      number: 8080
+              - match:
+                - uri:
+                    prefix: /resources
+                route:
+                - destination:
+                    host: keycloak
+                    port:
+                      number: 8080
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubectl_manifest.keycloak_secret_store will be created
+  + resource "kubectl_manifest" "keycloak_secret_store" {
+      + api_version             = "external-secrets.io/v1beta1"
+      + apply_only              = false
+      + field_manager           = "kubectl"
+      + force_conflicts         = false
+      + force_new               = false
+      + id                      = (known after apply)
+      + kind                    = "SecretStore"
+      + live_manifest_incluster = (sensitive value)
+      + live_uid                = (known after apply)
+      + name                    = "keycloak"
+      + namespace               = "keycloak"
+      + server_side_apply       = false
+      + uid                     = (known after apply)
+      + validate_schema         = true
+      + wait_for_rollout        = true
+      + yaml_body               = (sensitive value)
+      + yaml_body_parsed        = <<-EOT
+            apiVersion: external-secrets.io/v1beta1
+            kind: SecretStore
+            metadata:
+              name: keycloak
+              namespace: keycloak
+            spec:
+              provider:
+                aws:
+                  auth:
+                    jwt:
+                      serviceAccountRef:
+                        name: external-secret-keycloak
+                  region: us-west-2
+                  service: SecretsManager
+        EOT
+      + yaml_incluster          = (sensitive value)
+    }
+
+  # kubernetes_manifest.namespace_argo_workflows will be created
+  + resource "kubernetes_manifest" "namespace_argo_workflows" {
+      + manifest = {
+          + apiVersion = "v1"
+          + kind       = "Namespace"
+          + metadata   = {
+              + name = "argo"
+            }
+        }
+      + object   = {
+          + apiVersion = "v1"
+          + kind       = "Namespace"
+          + metadata   = {
+              + annotations                = (known after apply)
+              + creationTimestamp          = (known after apply)
+              + deletionGracePeriodSeconds = (known after apply)
+              + deletionTimestamp          = (known after apply)
+              + finalizers                 = (known after apply)
+              + generateName               = (known after apply)
+              + generation                 = (known after apply)
+              + labels                     = (known after apply)
+              + managedFields              = (known after apply)
+              + name                       = "argo"
+              + namespace                  = (known after apply)
+              + ownerReferences            = (known after apply)
+              + resourceVersion            = (known after apply)
+              + selfLink                   = (known after apply)
+              + uid                        = (known after apply)
+            }
+          + spec       = {
+              + finalizers = (known after apply)
+            }
+        }
+    }
+
+  # kubernetes_manifest.namespace_backstage will be created
+  + resource "kubernetes_manifest" "namespace_backstage" {
+      + manifest = {
+          + apiVersion = "v1"
+          + kind       = "Namespace"
+          + metadata   = {
+              + name = "backstage"
+            }
+        }
+      + object   = {
+          + apiVersion = "v1"
+          + kind       = "Namespace"
+          + metadata   = {
+              + annotations                = (known after apply)
+              + creationTimestamp          = (known after apply)
+              + deletionGracePeriodSeconds = (known after apply)
+              + deletionTimestamp          = (known after apply)
+              + finalizers                 = (known after apply)
+              + generateName               = (known after apply)
+              + generation                 = (known after apply)
+              + labels                     = (known after apply)
+              + managedFields              = (known after apply)
+              + name                       = "backstage"
+              + namespace                  = (known after apply)
+              + ownerReferences            = (known after apply)
+              + resourceVersion            = (known after apply)
+              + selfLink                   = (known after apply)
+              + uid                        = (known after apply)
+            }
+          + spec       = {
+              + finalizers = (known after apply)
+            }
+        }
+    }
+
+  # kubernetes_manifest.namespace_data_on_eks will be created
+  + resource "kubernetes_manifest" "namespace_data_on_eks" {
+      + manifest = {
+          + apiVersion = "v1"
+          + kind       = "Namespace"
+          + metadata   = {
+              + name = "data-on-eks"
+            }
+        }
+      + object   = {
+          + apiVersion = "v1"
+          + kind       = "Namespace"
+          + metadata   = {
+              + annotations                = (known after apply)
+              + creationTimestamp          = (known after apply)
+              + deletionGracePeriodSeconds = (known after apply)
+              + deletionTimestamp          = (known after apply)
+              + finalizers                 = (known after apply)
+              + generateName               = (known after apply)
+              + generation                 = (known after apply)
+              + labels                     = (known after apply)
+              + managedFields              = (known after apply)
+              + name                       = "data-on-eks"
+              + namespace                  = (known after apply)
+              + ownerReferences            = (known after apply)
+              + resourceVersion            = (known after apply)
+              + selfLink                   = (known after apply)
+              + uid                        = (known after apply)
+            }
+          + spec       = {
+              + finalizers = (known after apply)
+            }
+        }
+    }
+
+  # kubernetes_manifest.namespace_keycloak[0] will be created
+  + resource "kubernetes_manifest" "namespace_keycloak" {
+      + manifest = {
+          + apiVersion = "v1"
+          + kind       = "Namespace"
+          + metadata   = {
+              + name = "keycloak"
+            }
+        }
+      + object   = {
+          + apiVersion = "v1"
+          + kind       = "Namespace"
+          + metadata   = {
+              + annotations                = (known after apply)
+              + creationTimestamp          = (known after apply)
+              + deletionGracePeriodSeconds = (known after apply)
+              + deletionTimestamp          = (known after apply)
+              + finalizers                 = (known after apply)
+              + generateName               = (known after apply)
+              + generation                 = (known after apply)
+              + labels                     = (known after apply)
+              + managedFields              = (known after apply)
+              + name                       = "keycloak"
+              + namespace                  = (known after apply)
+              + ownerReferences            = (known after apply)
+              + resourceVersion            = (known after apply)
+              + selfLink                   = (known after apply)
+              + uid                        = (known after apply)
+            }
+          + spec       = {
+              + finalizers = (known after apply)
+            }
+        }
+    }
+
+  # kubernetes_manifest.secret_backstage_postgresql_config will be created
+  + resource "kubernetes_manifest" "secret_backstage_postgresql_config" {
+      + manifest = {
+          + apiVersion = "v1"
+          + data       = {
+              + POSTGRES_DB       = "YmFja3N0YWdl"
+              + POSTGRES_PASSWORD = (known after apply)
+              + POSTGRES_USER     = "YmFja3N0YWdl"
+            }
+          + kind       = "Secret"
+          + metadata   = {
+              + name      = "postgresql-config"
+              + namespace = "backstage"
+            }
+        }
+      + object   = {
+          + apiVersion = "v1"
+          + data       = {
+              + POSTGRES_DB       = "YmFja3N0YWdl"
+              + POSTGRES_PASSWORD = (known after apply)
+              + POSTGRES_USER     = "YmFja3N0YWdl"
+            }
+          + immutable  = (known after apply)
+          + kind       = "Secret"
+          + metadata   = {
+              + annotations                = (known after apply)
+              + creationTimestamp          = (known after apply)
+              + deletionGracePeriodSeconds = (known after apply)
+              + deletionTimestamp          = (known after apply)
+              + finalizers                 = (known after apply)
+              + generateName               = (known after apply)
+              + generation                 = (known after apply)
+              + labels                     = (known after apply)
+              + managedFields              = (known after apply)
+              + name                       = "postgresql-config"
+              + namespace                  = "backstage"
+              + ownerReferences            = (known after apply)
+              + resourceVersion            = (known after apply)
+              + selfLink                   = (known after apply)
+              + uid                        = (known after apply)
+            }
+          + stringData = (known after apply)
+          + type       = (known after apply)
+        }
+    }
+
+  # kubernetes_manifest.serviceaccount_data_on_eks will be created
+  + resource "kubernetes_manifest" "serviceaccount_data_on_eks" {
+      + manifest = {
+          + apiVersion = "v1"
+          + kind       = "ServiceAccount"
+          + metadata   = {
+              + annotations = {
+                  + "eks.amazonaws.com/role-arn" = (known after apply)
+                }
+              + labels      = {
+                  + app = "data-on-eks"
+                }
+              + name        = "data-on-eks"
+              + namespace   = "data-on-eks"
+            }
+        }
+      + object   = {
+          + apiVersion                   = "v1"
+          + automountServiceAccountToken = (known after apply)
+          + imagePullSecrets             = (known after apply)
+          + kind                         = "ServiceAccount"
+          + metadata                     = {
+              + annotations                = (known after apply)
+              + creationTimestamp          = (known after apply)
+              + deletionGracePeriodSeconds = (known after apply)
+              + deletionTimestamp          = (known after apply)
+              + finalizers                 = (known after apply)
+              + generateName               = (known after apply)
+              + generation                 = (known after apply)
+              + labels                     = (known after apply)
+              + managedFields              = (known after apply)
+              + name                       = "data-on-eks"
+              + namespace                  = "data-on-eks"
+              + ownerReferences            = (known after apply)
+              + resourceVersion            = (known after apply)
+              + selfLink                   = (known after apply)
+              + uid                        = (known after apply)
+            }
+          + secrets                      = (known after apply)
+        }
+    }
+
+  # kubernetes_manifest.serviceaccount_external_secret_keycloak[0] will be created
+  + resource "kubernetes_manifest" "serviceaccount_external_secret_keycloak" {
+      + manifest = {
+          + apiVersion = "v1"
+          + kind       = "ServiceAccount"
+          + metadata   = {
+              + annotations = {
+                  + "eks.amazonaws.com/role-arn" = (known after apply)
+                }
+              + name        = "external-secret-keycloak"
+              + namespace   = "keycloak"
+            }
+        }
+      + object   = {
+          + apiVersion                   = "v1"
+          + automountServiceAccountToken = (known after apply)
+          + imagePullSecrets             = (known after apply)
+          + kind                         = "ServiceAccount"
+          + metadata                     = {
+              + annotations                = (known after apply)
+              + creationTimestamp          = (known after apply)
+              + deletionGracePeriodSeconds = (known after apply)
+              + deletionTimestamp          = (known after apply)
+              + finalizers                 = (known after apply)
+              + generateName               = (known after apply)
+              + generation                 = (known after apply)
+              + labels                     = (known after apply)
+              + managedFields              = (known after apply)
+              + name                       = "external-secret-keycloak"
+              + namespace                  = "keycloak"
+              + ownerReferences            = (known after apply)
+              + resourceVersion            = (known after apply)
+              + selfLink                   = (known after apply)
+              + uid                        = (known after apply)
+            }
+          + secrets                      = (known after apply)
+        }
+    }
+
+  # random_password.backstage_postgres_password will be created
+  + resource "random_password" "backstage_postgres_password" {
+      + bcrypt_hash      = (sensitive value)
+      + id               = (known after apply)
+      + length           = 48
+      + lower            = true
+      + min_lower        = 0
+      + min_numeric      = 0
+      + min_special      = 0
+      + min_upper        = 0
+      + number           = true
+      + numeric          = true
+      + override_special = "!#"
+      + result           = (sensitive value)
+      + special          = true
+      + upper            = true
+    }
+
+  # random_password.keycloak_admin_password will be created
+  + resource "random_password" "keycloak_admin_password" {
+      + bcrypt_hash      = (sensitive value)
+      + id               = (known after apply)
+      + length           = 48
+      + lower            = true
+      + min_lower        = 0
+      + min_numeric      = 0
+      + min_special      = 0
+      + min_upper        = 0
+      + number           = true
+      + numeric          = true
+      + override_special = "!#?"
+      + result           = (sensitive value)
+      + special          = false
+      + upper            = true
+    }
+
+  # random_password.keycloak_postgres_password will be created
+  + resource "random_password" "keycloak_postgres_password" {
+      + bcrypt_hash      = (sensitive value)
+      + id               = (known after apply)
+      + length           = 48
+      + lower            = true
+      + min_lower        = 0
+      + min_numeric      = 0
+      + min_special      = 0
+      + min_upper        = 0
+      + number           = true
+      + numeric          = true
+      + override_special = "!#?"
+      + result           = (sensitive value)
+      + special          = false
+      + upper            = true
+    }
+
+  # random_password.keycloak_user_password will be created
+  + resource "random_password" "keycloak_user_password" {
+      + bcrypt_hash      = (sensitive value)
+      + id               = (known after apply)
+      + length           = 48
+      + lower            = true
+      + min_lower        = 0
+      + min_numeric      = 0
+      + min_special      = 0
+      + min_upper        = 0
+      + number           = true
+      + numeric          = true
+      + override_special = "!#?"
+      + result           = (sensitive value)
+      + special          = false
+      + upper            = true
+    }
+
+  # terraform_data.argo_workflows_keycloak_setup will be created
+  + resource "terraform_data" "argo_workflows_keycloak_setup" {
+      + id = (known after apply)
+    }
+
+  # terraform_data.backstage_keycloak_setup will be created
+  + resource "terraform_data" "backstage_keycloak_setup" {
+      + id = (known after apply)
+    }
+
+  # terraform_data.wait_for_cert_manager will be created
+  + resource "terraform_data" "wait_for_cert_manager" {
+      + id = (known after apply)
+    }
+
+  # module.crossplane_aws_provider_role.aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRoleWithWebIdentity"
+                      + Condition = {
+                          + StringLike = {
+                              + "oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4:aud" = "sts.amazonaws.com"
+                              + "oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4:sub" = "system:serviceaccount:crossplane-system:provider-aws*"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Federated = "arn:aws:iam::801172442310:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = (known after apply)
+      + name_prefix           = "cnoe-crossplane-provider-aws"
+      + path                  = "/"
+      + tags                  = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+      + tags_all              = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.crossplane_aws_provider_role.aws_iam_role_policy_attachment.this["policy"] will be created
+  + resource "aws_iam_role_policy_attachment" "this" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+      + role       = (known after apply)
+    }
+
+  # module.data_on_eks_runner_role.aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRoleWithWebIdentity"
+                      + Condition = {
+                          + StringEquals = {
+                              + "oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4:aud" = "sts.amazonaws.com"
+                              + "oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4:sub" = "system:serviceaccount:data-on-eks:data-on-eks"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Federated = "arn:aws:iam::801172442310:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = (known after apply)
+      + name_prefix           = "cnoe-external-dns"
+      + path                  = "/"
+      + tags                  = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+      + tags_all              = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.data_on_eks_runner_role.aws_iam_role_policy_attachment.this["policy"] will be created
+  + resource "aws_iam_role_policy_attachment" "this" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+      + role       = (known after apply)
+    }
+
+  # module.external_dns_role[0].aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRoleWithWebIdentity"
+                      + Condition = {
+                          + StringEquals = {
+                              + "oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4:aud" = "sts.amazonaws.com"
+                              + "oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4:sub" = "system:serviceaccount:external-dns:external-dns"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Federated = "arn:aws:iam::801172442310:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = (known after apply)
+      + name_prefix           = "cnoe-external-dns"
+      + path                  = "/"
+      + tags                  = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+      + tags_all              = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.external_secrets_role_keycloak[0].aws_iam_role.this[0] will be created
+  + resource "aws_iam_role" "this" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRoleWithWebIdentity"
+                      + Condition = {
+                          + StringEquals = {
+                              + "oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4:aud" = "sts.amazonaws.com"
+                              + "oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4:sub" = "system:serviceaccount:keycloak:external-secret-keycloak"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Federated = "arn:aws:iam::801172442310:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/645CDC6BE2041EC5EFD178609BEC5BD4"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = true
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = (known after apply)
+      + name_prefix           = "cnoe-external-secrets-"
+      + path                  = "/"
+      + tags                  = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+      + tags_all              = {
+          + "env"     = "dev"
+          + "project" = "cnoe"
+        }
+      + unique_id             = (known after apply)
+    }
+
+Plan: 43 to add, 0 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: plan.out
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "plan.out"

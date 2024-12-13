@@ -133,3 +133,14 @@ resource "kubectl_manifest" "application_argocd_argo_workflows_sso_config" {
 #    }
 #  )
 #}
+
+resource "kubectl_manifest" "ingress_argo_workflows" {
+  depends_on = [
+    kubectl_manifest.application_argocd_argo_workflows,
+  ]
+
+  yaml_body = templatefile("${path.module}/templates/manifests/vs-argo-workflows.yaml", {
+      ARGO_WORKFLOWS_DOMAIN_NAME = local.argo_domain_name
+    }
+  )
+}

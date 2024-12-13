@@ -236,3 +236,14 @@ resource "kubectl_manifest" "application_argocd_keycloak" {
 #    }
 #  )
 #}
+
+resource "kubectl_manifest" "ingress_keycloak" {
+  depends_on = [
+    kubectl_manifest.application_argocd_keycloak,
+  ]
+
+  yaml_body = templatefile("${path.module}/templates/manifests/vs-keycloak.yaml", {
+      KEYCLOAK_DOMAIN_NAME = local.kc_domain_name
+    }
+  )
+}

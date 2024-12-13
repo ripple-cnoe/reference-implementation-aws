@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: argo-workflows
+  namespace: argo
+spec:
+  gateways:
+  - istio-gateway/cnoe-dev-gateway
+  hosts:
+  - workflows.cnoe-dev.nexus.ripplenet.dev
+  http:
+    - route:
+      - destination:
+         host: argo-workflows-server
+         port:
+           number: 2746
