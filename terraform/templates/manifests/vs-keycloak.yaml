@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: keycloak
-  namespace: argo
+  namespace: keycloak
 spec:
   gateways:
   - istio-gateway/cnoe-dev-gateway
