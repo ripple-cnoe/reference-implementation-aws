@@ -16,7 +16,7 @@ spec:
       - destination:
          host: keycloak
          port:
-           number: 8081
+           number: 8080
     - match:
       - uri:
          exact: /
@@ -24,7 +24,7 @@ spec:
       - destination:
          host: keycloak
          port:
-           number: 8081
+           number: 8080
     - match:
       - uri:
          prefix: /realms
