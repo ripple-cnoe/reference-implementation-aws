@@ -4,7 +4,7 @@ metadata:
   name: reference-implementation-aws
   annotations:
     github.com/project-slug: ripple-cnoe/reference-implementation-aws
-    backstage.io/techdocs-ref: https://github.com/cnoe-io/reference-implementation-aws/blob/main/README.md
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: other
   lifecycle: unknown
