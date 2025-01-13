@@ -12,6 +12,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
   project: ""
   source:
     chart: gateway
@@ -23,6 +25,7 @@ spec:
         service:
           annotations:
             service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+            service.beta.kubernetes.io/aws-load-balancer-internal: "true"
         podAnnotations:
           proxy.istio.io/config: '{"gatewayTopology" : { "proxyProtocol": {} }}'
   destination:
